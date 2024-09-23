@@ -26,7 +26,7 @@ export default function Signin() {
             },
         }).then(response => {
             setToken(response['data']['token']);
-            navigate('/home')
+            navigate('/dashboard')
 
         }).catch(error => {
             console.log(error)
