@@ -7,10 +7,11 @@ export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const register = async (event) => {
         event.preventDefault();
-
+        setIsLoading(true);
         const data = {
             name: name,
             email: email,
@@ -27,6 +28,8 @@ export default function SignUp() {
         }).catch(error => {
             console.log(error)
         })
+
+        setIsLoading(false);
     }
 
     const nameChange = (event) => {
@@ -48,7 +51,9 @@ export default function SignUp() {
 
     return (
         <div className="w-screen h-screen flex flex-col items-center bg-[color:--background-gray]">
-            <div className="w-[20em] h-fit bg-[color:--border-dark-gray] border-2 border-[color:--border-light-gray] text-[color:--text-light-gray] mt-[2.5em] rounded-[10px] flex flex-col items-center">
+            {isLoading ? <div className="flex items-center justify-center min-h-screen">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
+            </div> : <div className="w-[20em] h-fit bg-[color:--border-dark-gray] border-2 border-[color:--border-light-gray] text-[color:--text-light-gray] mt-[2.5em] rounded-[10px] flex flex-col items-center">
                 <form onSubmit={register}
                     className="w-max h-max flex flex-col items-center">
                     <p
@@ -94,7 +99,7 @@ export default function SignUp() {
                     <input
                         type="submit"
                         value='Sign Up'
-                        className="bg-[color:--background-dark-slate] border-2 rounded-[10px] mt-[1.5em] p-[0.5em] font-bold hover:cursor-pointer hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--border-dark-gray] transition-all duration-[0.3s] ease-in-out" />
+                        className="bg-[color:--background-dark-slate] border-2 rounded-[10px] mt-[1.5em] p-[0.5em] text-[color:--text-light-gray] font-bold hover:cursor-pointer hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--border-dark-gray] transition-all duration-[0.3s] ease-in-out" />
                     <p
                         className="mt-[1em] pointer-events-none">
                         Already have an account?
@@ -105,7 +110,7 @@ export default function SignUp() {
                         Sign In here
                     </a>
                 </form>
-            </div>
+            </div>}
         </div>
     )
 }
