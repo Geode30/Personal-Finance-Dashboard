@@ -15,14 +15,6 @@ export default function Signin() {
     const [loginSuccess, setIsLoginSuccess] = useState(false);
     const [successMsgShown, setSuccessMsgShown] = useState(false);
 
-    const showSuccessMsg = () => {
-        setIsLoading(false);
-        setSuccessMsgShown(true);
-        setTimeout(() => {
-            setSuccessMsgShown(false);
-        }, 1000);
-    }
-
     const login = async (event) => {
         event.preventDefault();
         setIsLoading(true);
@@ -36,22 +28,29 @@ export default function Signin() {
                 Accept: 'application/json',
             },
         }).then(response => {
+            console.log(response);
             if (response['data']['message'] === 'User Logged in Successfully') {
                 setToken(response['data']['token']);
-                console.log(response['data']['token']);
                 setIsLoginSuccess(true);
-                setIsLoading(false);
-                setSuccessMsgShown(true);
-                navigate('/dashboard');
             }
             else {
                 setIsLoginSuccess(false);
-                showSuccessMsg();
             }
         }).catch(error => {
             console.log(error);
             setIsLoginSuccess(false);
-            showSuccessMsg();
+        }).finally(() => { 
+            setIsLoading(false);
+            setSuccessMsgShown(true);
+            setTimeout(() => {
+                setSuccessMsgShown(false);
+            }, 1000);
+
+            if (loginSuccess) { 
+                setTimeout(() => {
+                    navigate('/dashboard');
+                }, 500);
+            }
         })
     }
 

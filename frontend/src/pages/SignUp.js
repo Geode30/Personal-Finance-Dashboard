@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export default function SignUp() {
 
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordConfirm, setPasswordConfirm] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [registerSuccess, setRegisterSuccess] = useState(false);
+    const [successMsgShown, setSuccessMsgShown] = useState(false);
 
     const register = async (event) => {
         event.preventDefault();
@@ -24,12 +28,26 @@ export default function SignUp() {
                 Accept: 'application/json',
             },
         }).then(response => {
-            console.log(response)
+            console.log(response);
+            if (response['data']['message'] === 'User Created Successfully') { 
+                setRegisterSuccess(true);
+            }
         }).catch(error => {
             console.log(error)
+            setRegisterSuccess(false);
+        }).finally(() => { 
+            setIsLoading(false);
+            setSuccessMsgShown(true);
+            setTimeout(() => {
+                setSuccessMsgShown(false);
+            }, 1000);
+            
+            if (registerSuccess) { 
+                setTimeout(() => {
+                    navigate('/login');
+                }, 500);
+            }
         })
-
-        setIsLoading(false);
     }
 
     const nameChange = (event) => {
@@ -51,6 +69,9 @@ export default function SignUp() {
 
     return (
         <div className="w-screen h-screen flex flex-col items-center bg-[color:--background-gray]">
+            <div className={`h-screen w-screen ${successMsgShown ? 'flex' : 'hidden'} justify-center items-center absolute bg-[rgba(255,255,255,0.2)]`}>
+                <div className="h-[4em] w-[20em] rounded-[10px] absolute bg-[rgba(30,30,30,0.95)] text-white text-center pt-[1.2em]">{registerSuccess ? 'User Created Successfully' : 'Registration Failed'}</div>
+            </div>
             {isLoading ? <div className="flex items-center justify-center min-h-screen">
                 <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
             </div> : <div className="w-[20em] h-fit bg-[color:--border-dark-gray] border-2 border-[color:--border-light-gray] text-[color:--text-light-gray] mt-[2.5em] rounded-[10px] flex flex-col items-center">

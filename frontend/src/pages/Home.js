@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import CustomButton from "../components/CustomButton";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -19,14 +20,8 @@ export default function Home() {
                     Personal Finance Dashboard by Jhio
                 </h1>
                 <div className="flex flex-row gap-x-[2em]">
-                    <button className="bg-[color:--background-dark-slate] border-2 rounded-[10px] mt-[1.5em] p-[0.5em] text-[color:--text-light-gray] font-bold hover:cursor-pointer hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--border-dark-gray] transition-all duration-[0.3s] ease-in-out"
-                        onClick={toSignIn}>
-                        Sign in here
-                    </button>
-                    <button className="bg-[color:--background-dark-slate] border-2 rounded-[10px] mt-[1.5em] p-[0.5em] text-[color:--text-light-gray] font-bold hover:cursor-pointer hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--border-dark-gray] transition-all duration-[0.3s] ease-in-out"
-                        onClick={toSignUp}>
-                        Sign up here
-                    </button>
+                    <CustomButton onClickFunction={toSignIn} buttonValue={"Sign in here"} />
+                    <CustomButton onClickFunction={toSignUp} buttonValue={"Sign up here"} />
                 </div>
             </div>
         </div>

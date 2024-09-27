@@ -8,7 +8,6 @@ export default function FinancePieChart({ data, customizedLabel, colors }) {
                 data={data}
                 cx={200}
                 cy={200}
-                labelLine={false}
                 label={customizedLabel}
                 outerRadius={80}
                 fill="#8884d8"
@@ -19,7 +18,7 @@ export default function FinancePieChart({ data, customizedLabel, colors }) {
                 ))}
             </Pie>
             <Tooltip />
-            <Legend wrapperStyle={{ fontWeight: 'bold' }} />
+            <Legend wrapperStyle={{ fontWeight: 'bold' }} iconType="circle" />
         </PieChart>
     )
 }

@@ -5,6 +5,7 @@ import SignIn from './pages/SignIn';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import AddIncomeForm from './pages/AddIncomeForm';
+import AddExpenseForm from './pages/AddExpenseForm';
 
 import { MyContext } from './MyContext';
 import { useContext, useEffect, useState } from 'react';
@@ -34,7 +35,8 @@ function App() {
         <Route path='register' element={!isTokenAvailable ? <SignUp /> : <Navigate to='/dashboard' />} />
         <Route path='login' element={!isTokenAvailable ? <SignIn /> : <Navigate to='/dashboard' />} />
         <Route path='dashboard' element={isTokenAvailable ? <Dashboard /> : <Navigate to='/' />} />
-        <Route path='expense/add' element={isTokenAvailable ? <AddIncomeForm /> : <Navigate to='/' />} />
+        <Route path='income/add' element={isTokenAvailable ? <AddIncomeForm /> : <Navigate to='/' />} />
+        <Route path='expense/add' element={isTokenAvailable ? <AddExpenseForm /> : <Navigate to='/' />} />
       </Routes>
     </BrowserRouter>
   );
