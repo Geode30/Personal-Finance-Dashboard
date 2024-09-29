@@ -1,13 +1,15 @@
 0. Register/Login
-Complete
+Sign Up - Complete
+Login - Complete
 
 1. Dashboard Overview
-Complete
+Income vs Expense - Complete
+Budget vs Expense
 
 2. Entry History
 Entry Histoy for the day
 Entry Histoy for the month
-Entry Histoy for the year
+Entry Histoy for the year - Complete
 
 3. Budgeting
 Set Budget: Define a monthly budget.
