@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import React from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,14 @@ export default function Signin() {
     const [isLoading, setIsLoading] = useState(false);
     const [loginSuccess, setIsLoginSuccess] = useState(false);
     const [successMsgShown, setSuccessMsgShown] = useState(false);
+
+    useEffect(() => { 
+        if (loginSuccess) { 
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 1000);
+        }
+    }, [loginSuccess])
 
     const login = async (event) => {
         event.preventDefault();
@@ -44,13 +52,7 @@ export default function Signin() {
             setSuccessMsgShown(true);
             setTimeout(() => {
                 setSuccessMsgShown(false);
-            }, 1000);
-
-            if (loginSuccess) { 
-                setTimeout(() => {
-                    navigate('/dashboard');
-                }, 500);
-            }
+            }, 500);
         })
     }
 

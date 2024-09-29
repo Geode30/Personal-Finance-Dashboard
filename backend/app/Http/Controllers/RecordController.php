@@ -56,9 +56,6 @@ class RecordController extends Controller
 
         $today = Carbon::today();
 
-        $incomes = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereDate('created_at', $today)->get();
-        $expenses = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereDate('created_at', $today)->get();
-
         $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereDate('created_at', $today)->sum('amount');
         $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereDate('created_at', $today)->sum('amount');
 
@@ -73,13 +70,98 @@ class RecordController extends Controller
             $savedOrLoss = 'Loss';
         }
 
+        $noRecord = false;
+
+        if ($totalExpense == 0 && $totalIncome == 0) {
+            $noRecord = true;
+        }
+
         return response()->json([
             'message' => 'Successful',
-            'totalIncome' => $totalIncome,
-            'totalExpense' => $totalExpense,
-            'incomes' => $incomes,
-            'expenses' => $expenses,
-            'result' => $result,
+            'title' => 'Today',
+            'noRecord' => $noRecord,
+            'totalIncome' => intval($totalIncome),
+            'totalExpense' => intval($totalExpense),
+            'result' => intval($result),
+            'resultStatus' => $savedOrLoss
+        ]);
+    }
+
+    public function displayDataMonth(Request $request)
+    {
+        $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
+
+        $thisMonth = Carbon::now()->month;
+        $thisYear = Carbon::now()->year;
+
+        $monthName = Carbon::now()->format('F');
+
+        $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->sum('amount');
+        $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->sum('amount');
+
+        $result = 0;
+        $savedOrLoss = '';
+
+        if ($totalIncome > $totalExpense) {
+            $result = $totalIncome - $totalExpense;
+            $savedOrLoss = 'Saved';
+        } else {
+            $result = $totalExpense - $totalIncome;
+            $savedOrLoss = 'Loss';
+        }
+
+        $noRecord = false;
+
+        if ($totalExpense == 0 && $totalIncome == 0) {
+            $noRecord = true;
+        }
+
+        return response()->json([
+            'message' => 'Successful',
+            'noRecord' => $noRecord,
+            'title' => sprintf('This Month, %s', $monthName),
+            'month' => $monthName,
+            'totalIncome' => intval($totalIncome),
+            'totalExpense' => intval($totalExpense),
+            'result' => intval($result),
+            'resultStatus' => $savedOrLoss
+        ]);
+    }
+
+    public function displayDataYear(Request $request)
+    {
+        $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
+
+        $thisYear = Carbon::now()->year;
+
+        $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereYear('created_at', $thisYear)->sum('amount');
+        $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereYear('created_at', $thisYear)->sum('amount');
+
+        $result = 0;
+        $savedOrLoss = '';
+
+        if ($totalIncome > $totalExpense) {
+            $result = $totalIncome - $totalExpense;
+            $savedOrLoss = 'Saved';
+        } else {
+            $result = $totalExpense - $totalIncome;
+            $savedOrLoss = 'Loss';
+        }
+
+        $noRecord = false;
+
+        if ($totalExpense == 0 && $totalIncome == 0) {
+            $noRecord = true;
+        }
+
+        return response()->json([
+            'message' => 'Successful',
+            'noRecord' => $noRecord,
+            'title' => sprintf('This Year, %d', $thisYear),
+            'year' => intval($thisYear),
+            'totalIncome' => intval($totalIncome),
+            'totalExpense' => intval($totalExpense),
+            'result' => intval($result),
             'resultStatus' => $savedOrLoss
         ]);
     }

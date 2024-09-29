@@ -18,3 +18,5 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 Route::post('/income/add', [RecordController::class, 'addIncomeRecord']);
 Route::post('/expense/add', [RecordController::class, 'addExpenseRecord']);
 Route::get('/data/day', [RecordController::class, 'displayDataDay']);
+Route::get('/data/month', [RecordController::class, 'displayDataMonth']);
+Route::get('/data/year', [RecordController::class, 'displayDataYear']);

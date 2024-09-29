@@ -40,13 +40,10 @@ export default function SignUp() {
             setSuccessMsgShown(true);
             setTimeout(() => {
                 setSuccessMsgShown(false);
-            }, 1000);
-            
-            if (registerSuccess) { 
-                setTimeout(() => {
+                if (registerSuccess) { 
                     navigate('/login');
-                }, 500);
-            }
+                }
+            }, 1000);
         })
     }
 

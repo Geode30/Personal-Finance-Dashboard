@@ -1,8 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { MyContext } from "../MyContext";
+import { useNavigate } from "react-router-dom";
 
 export default function AddExpenseForm() {
+    const navigate = useNavigate();
     const { token } = useContext(MyContext);
     const [data, setData] = useState({
         type: 'Expense',
@@ -11,6 +13,7 @@ export default function AddExpenseForm() {
     });
     const [message, setMessage] = useState('');
     const [messageShown, setMessageShown] = useState(false);
+    const [operationSuccess, setOperationSuccess] = useState(false);
 
     const setCategory = (event) => {
         setData(prevData => ({
@@ -26,6 +29,14 @@ export default function AddExpenseForm() {
         }))
     }
 
+    useEffect(() => {
+        if (operationSuccess) { 
+            setTimeout(() => {
+                navigate('/dashboard');
+            }, 1000);
+        }
+    }, [operationSuccess]);
+
     const addExpense = async (event) => {
         event.preventDefault();
 
@@ -40,18 +51,18 @@ export default function AddExpenseForm() {
             console.log(response);
             if (response['data']['message'] === 'Expense Successfully Added') {
                 setMessage(response['data']['message']);
+                setOperationSuccess(true);
             }
             else {
                 setMessage('Something is wrong');
             }
-            setMessageShown(true);
         }).catch(error => {
             console.log(error);
             setMessage('Something is wrong');
-            setMessageShown(true);
         }).finally(() => {
+            setMessageShown(true);
             setTimeout(() => {
-                setMessageShown(false)
+                setMessageShown(false);
             }, 1000);
         })
     }

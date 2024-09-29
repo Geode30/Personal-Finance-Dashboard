@@ -3,32 +3,100 @@
 @tailwind utilities;
 
 :root {
+  /* Background Colors */
+  --background-color: #121212;
+  --background-gray: #1e1e1e;
+  --background-dark-slate: #2c2c2c;
 
-    /* Background Colors */
-    --background-color: #121212;
-    --background-gray: #1E1E1E;
-    --background-dark-slate: #2C2C2C;
-    
-     /* text Colors */
-    --text-light-gray: #E0E0E0;
-    --text-soft-white: #FFFFFF;
-    --text-muted-cyan: #A0D0D0;
+  /* text Colors */
+  --text-light-gray: #e0e0e0;
+  --text-soft-white: #ffffff;
+  --text-muted-cyan: #a0d0d0;
 
-     /* Accent Colors */
-    --accent-blue: #007ACC;
-    --accent-purple: #8A2BE2;
-    --accent-red: #FF6347;
-    --accent-green: #32CD32;
+  /* Accent Colors */
+  --accent-blue: #007acc;
+  --accent-purple: #8a2be2;
+  --accent-red: #ff6347;
+  --accent-green: #32cd32;
 
-     /* Seconday Colors */
-    --secondary-gray: #4B4B4B;
-    --accent-yellow: #FFD700;
+  /* Seconday Colors */
+  --secondary-gray: #4b4b4b;
+  --accent-yellow: #ffd700;
 
-     /* Border Colors */
-    --border-dark-gray: #3A3A3A;
-    --border-light-gray: #4D4D4D;
+  /* Border Colors */
+  --border-dark-gray: #3a3a3a;
+  --border-light-gray: #4d4d4d;
 }
 
 body {
-    overflow-x: hidden;
+  overflow-x: hidden;
+}
+
+@keyframes fadeIn {
+  0% {
+    line-height: 0;
+    opacity: 0;
+  }
+  100% {
+    line-height: 1.5;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@keyframes fadeInChildren {
+  0% {
+    opacity: 0;
+    pointer-events: none;
+  }
+  80% {
+    opacity: 0;
+    pointer-events: none;
+  }
+  100% {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    line-height: 1.5;
+    opacity: 1;
+  }
+  100% {
+    line-height: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes fadeOutChildren {
+  0% {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  20% {
+    opacity: 0;
+    pointer-events: none;
+  }
+  100% {
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-in-out forwards;
+}
+
+.animate-fadeInChildren {
+  animation: fadeInChildren 0.2s ease-in-out forwards;
+}
+
+.animate-fadeOut {
+  animation: fadeOut 0.2s ease-in-out forwards;
+}
+
+.animate-fadeOutChildren {
+  animation: fadeOutChildren 0.2s ease-in-out forwards;
 }

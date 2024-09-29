@@ -1,0 +1,26 @@
+0. Register/Login
+Complete
+
+1. Dashboard Overview
+Complete
+
+2. Income Tracking
+Income History: List of recorded income entries.
+
+3. Expense Tracking
+Expense History: List of recorded expenses.
+
+4. Budgeting
+Set Budget: Define a monthly budget.
+Budget Overview: Quick view of spending against the budget.
+
+5. Savings Goals
+Create Goals: Set simple savings targets.
+Track Progress: Basic visual of how close you are to your goals.
+
+6. User Profile
+Account Settings: Update user information.
+
+Additional Features (Optional)
+Dark Mode Toggle
+Mobile Responsiveness
