@@ -29,6 +29,16 @@ class RecordController extends Controller
         $fields['date'] = $this->getCurrentDate();
         $fields['user_id'] = $verifyToken->tokenable_id;
 
+        $currentMonth = Carbon::now()->format('F');
+        $currentDay = Carbon::now()->format('j');
+        $currentYear = Carbon::now()->format('Y');
+        $currentTime = Carbon::now()->format('g:i A');
+
+        $fields['month'] = $currentMonth;
+        $fields['day'] = intval($currentDay);
+        $fields['year'] = intval($currentYear);
+        $fields['time'] = $currentTime;
+
         Record::create($fields);
     }
 
@@ -163,6 +173,18 @@ class RecordController extends Controller
             'totalExpense' => intval($totalExpense),
             'result' => intval($result),
             'resultStatus' => $savedOrLoss
+        ]);
+    }
+
+    public function displayHistory(Request $request)
+    {
+        $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
+
+        $records = Record::select('id', 'type', 'category', 'amount', 'month', 'day', 'year', 'time')->where('user_id', $verifyToken->tokenable_id)->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'message' => 'Successful',
+            'records' => $records
         ]);
     }
 }

@@ -1,13 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RecordController;
-
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
 
 // Auth Controller
 Route::post('/register', [AuthController::class, 'register']);
@@ -20,3 +15,4 @@ Route::post('/expense/add', [RecordController::class, 'addExpenseRecord']);
 Route::get('/data/day', [RecordController::class, 'displayDataDay']);
 Route::get('/data/month', [RecordController::class, 'displayDataMonth']);
 Route::get('/data/year', [RecordController::class, 'displayDataYear']);
+Route::get('/entry/history', [RecordController::class, 'displayHistory']);

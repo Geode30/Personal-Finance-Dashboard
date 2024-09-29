@@ -6,9 +6,8 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { MyContext } from '../../MyContext';
 
-export default function MainContent() {
+export default function MainContent({ logout, loading }) {
 
-    const [loading, setIsLoading] = useState(false);
     const [filterClicked, setFilterClicked] = useState(false);
     const [filteredBy, setFilteredBy] = useState('day');
     const [filterTitle, setFilterTitle] = useState('Today');
@@ -33,6 +32,10 @@ export default function MainContent() {
         { name: 'Expenses', value: 0 },
     ]);
     const [noRecord, setNoRecord] = useState(false);
+
+    useEffect(() => { 
+        console.log('Token: ', token);
+    }, [])
 
     useEffect(() => {
         const updateData = async () => {
@@ -64,31 +67,21 @@ export default function MainContent() {
         updateData();
     }, []);
 
-    const logout = async () => {
-        setIsLoading(true);
-        await axios.post('http://127.0.0.1:8000/api/logout', null, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                Accept: 'application/json',
-            },
-        }).then(response => {
-            setToken('No Token');
-            navigate('/');
-
-        }).catch(error => {
-            console.log(error);
-        }).finally(() => {
-            setIsLoading(false);
-        })
-    }
+    //Navigation Functions
 
     const toAddIncomeForm = () => {
-        navigate('/income/add')
+        navigate('/income/add');
     }
 
     const toAddExpenseForm = () => {
-        navigate('/expense/add')
+        navigate('/expense/add');
     }
+
+    const toAddHistoryPage = () => {
+        navigate('/entry/history');
+    }
+
+    //Filter Click Functions
 
     const filterByDay = () => {
         setFilteredBy('day');
@@ -99,7 +92,6 @@ export default function MainContent() {
     const filterByMonth = () => {
         setFilteredBy('month');
         setFilterClicked(false);
-
     }
 
     const filterByYear = () => {
@@ -143,7 +135,7 @@ export default function MainContent() {
             <Loading isLoading={loading} />
             <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You're Income and Expenses { filterTitle }</h1>
             <div>
-                <div onClick={handleFilterClicked} className={`text-[1.5em] border-2 pl-[0.5em] pr-[0.5em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em] hover:cursor-pointer`}>Filter ▼</div>
+                <div onClick={handleFilterClicked} className={`text-[1.5em] select-none border-2 pl-[0.5em] pr-[0.5em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em] hover:cursor-pointer`}>Filter ▼</div>
                 <div className={`text-[1.25em] w-[8em] border-2 font-bold text-center text-[color:--text-light-gray] hover:cursor-pointer ${filterClicked ? 'animate-fadeIn' : 'animate-fadeOut'}`}>
                     <div onClick={filterByDay} className={`border-[1px] hover:bg-[color:--text-light-gray] hover:text-[color:--background-gray] ${filterClicked ? 'animate-fadeInChildren' : 'animate-fadeOutChildren'}`}>Day</div>
                     <div onClick={filterByMonth} className={`border-[1px] hover:bg-[color:--text-light-gray] hover:text-[color:--background-gray] animate-fadeInChildren ${filterClicked ? 'animate-fadeInChildren' : 'animate-fadeOutChildren'}`}>Month</div>
@@ -155,9 +147,11 @@ export default function MainContent() {
                 <FinancePieChart data={data} />
                 <p className={`font-bold ${result.resultStatus === 'Saved' ? `text-[#32CD32]` : `text-[#D71515]`}`}>{`You ${result.resultStatus} ${result.resultValue} ${filterTitle}`}</p>
             </div>
-            <div className={`w-fit h-fit flex flex-row items-center gap-x-[1em]`}>
+            <div className={`w-fit h-fit flex flex-row flex-wrap justify-center items-center gap-x-[1em]`}>
                 <CustomButton onClickFunction={toAddIncomeForm} buttonValue={"Add Income"} />
                 <CustomButton onClickFunction={toAddExpenseForm} buttonValue={"Add Expense"} />
+                <CustomButton onClickFunction={toAddHistoryPage} buttonValue={"History"} />
+                <CustomButton onClickFunction={toAddExpenseForm} buttonValue={"Set Goal"} />
             </div>
             <CustomButton onClickFunction={logout} buttonValue={"Logout"} customStyles={"mt-[2em] mb-[2em]"} />
         </div>
