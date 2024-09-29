@@ -21,4 +21,4 @@ Track Progress: Basic visual of how close you are to your goals.
 
 Additional Features (Optional)
 Dark Mode Toggle
-Mobile Responsiveness
+Mobile Responsiveness - Complete
