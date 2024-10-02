@@ -5,12 +5,14 @@ import Loading from "../Loading";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { MyContext } from '../../MyContext';
+import FilterOptions from "../FilterOptions";
 
 export default function MainContent({ logout, loading }) {
 
     const [filterClicked, setFilterClicked] = useState(false);
     const [filteredBy, setFilteredBy] = useState('day');
     const [filterTitle, setFilterTitle] = useState('Today');
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleFilterClicked = () => { 
         if (filterClicked) {
@@ -20,6 +22,12 @@ export default function MainContent({ logout, loading }) {
             setFilterClicked(true);
         }
     }
+
+    useEffect(() => { 
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 1500);
+    }, [])
 
     const navigate = useNavigate();
     const { setToken, token } = useContext(MyContext);
@@ -132,17 +140,17 @@ export default function MainContent({ logout, loading }) {
 
     return (
         <div className={`h-fit w-screen ${loading ? 'hidden' : 'flex'} flex-col items-center bg-[color:--background-gray]`}>
-            <Loading isLoading={loading} />
+            <Loading isLoading={isLoading} />
             <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You're Income and Expenses { filterTitle }</h1>
             <div>
                 <div onClick={handleFilterClicked} className={`text-[1.5em] select-none border-2 pl-[0.5em] pr-[0.5em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em] hover:cursor-pointer`}>Filter ▼</div>
-                <div className={`text-[1.25em] w-[8em] border-2 font-bold text-center text-[color:--text-light-gray] hover:cursor-pointer ${filterClicked ? 'animate-fadeIn' : 'animate-fadeOut'}`}>
-                    <div onClick={filterByDay} className={`border-[1px] hover:bg-[color:--text-light-gray] hover:text-[color:--background-gray] ${filterClicked ? 'animate-fadeInChildren' : 'animate-fadeOutChildren'}`}>Day</div>
-                    <div onClick={filterByMonth} className={`border-[1px] hover:bg-[color:--text-light-gray] hover:text-[color:--background-gray] animate-fadeInChildren ${filterClicked ? 'animate-fadeInChildren' : 'animate-fadeOutChildren'}`}>Month</div>
-                    <div onClick={filterByYear} className={`border-[1px] hover:bg-[color:--text-light-gray] hover:text-[color:--background-gray] animate- ${filterClicked ? 'animate-fadeInChildren' : 'animate-fadeOutChildren'}`}>Year</div>
+                <div className={`text-[1.25em] w-[8em] border-2 font-bold text-center text-[color:--text-light-gray] hover:cursor-pointer opacity-0 ${filterClicked ? 'animate-fadeIn' : 'animate-fadeOut'}`}>
+                    <FilterOptions onClickFunction={filterByDay} filterClicked={filterClicked} optionValue={'Day'} />
+                    <FilterOptions onClickFunction={filterByMonth} filterClicked={filterClicked} optionValue={'Month'} />
+                    <FilterOptions onClickFunction={filterByYear} filterClicked={filterClicked} optionValue={'Year'} />
                 </div>
             </div>
-            <h1 className={`${noRecord ? 'block' : 'hidden'} text-[3em] w-[15em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em]`}>You got no records of income and expenses {filterTitle}</h1>
+            <h1 className={`${noRecord ? 'block' : 'hidden'} text-[3em] w-[10em] md:w-[15em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em]`}>You got no records of income and expenses {filterTitle}</h1>
             <div className={`${noRecord ? 'hidden' : 'flex'} flex-col items-center`}>
                 <FinancePieChart data={data} />
                 <p className={`font-bold ${result.resultStatus === 'Saved' ? `text-[#32CD32]` : `text-[#D71515]`}`}>{`You ${result.resultStatus} ${result.resultValue} ${filterTitle}`}</p>

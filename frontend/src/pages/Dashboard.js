@@ -6,7 +6,7 @@ import { MyContext } from '../MyContext';
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
-    const [loading, setIsLoading] = useState(false);
+    const [loading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const { setToken, token } = useContext(MyContext);
 

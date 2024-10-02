@@ -187,4 +187,40 @@ class RecordController extends Controller
             'records' => $records
         ]);
     }
+
+    public function displayHistoryType(Request $request, $type)
+    {
+        $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
+
+        $records = Record::select('id', 'type', 'category', 'amount', 'month', 'day', 'year', 'time')->where('user_id', $verifyToken->tokenable_id)->where('type', $type)->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'message' => 'Successful',
+            'records' => $records
+        ]);
+    }
+
+    public function displayHistoryMonth(Request $request, $month)
+    {
+        $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
+
+        $records = Record::select('id', 'type', 'category', 'amount', 'month', 'day', 'year', 'time')->where('user_id', $verifyToken->tokenable_id)->where('month', $month)->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'message' => 'Successful',
+            'records' => $records
+        ]);
+    }
+
+    public function displayHistoryTypeMonth(Request $request, $type, $month)
+    {
+        $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
+
+        $records = Record::select('id', 'type', 'category', 'amount', 'month', 'day', 'year', 'time')->where('user_id', $verifyToken->tokenable_id)->where('type', $type)->where('month', $month)->orderBy('created_at', 'desc')->get();
+
+        return response()->json([
+            'message' => 'Successful',
+            'records' => $records
+        ]);
+    }
 }

@@ -16,3 +16,6 @@ Route::get('/data/day', [RecordController::class, 'displayDataDay']);
 Route::get('/data/month', [RecordController::class, 'displayDataMonth']);
 Route::get('/data/year', [RecordController::class, 'displayDataYear']);
 Route::get('/entry/history', [RecordController::class, 'displayHistory']);
+Route::get('/entry/history/type/{type}', [RecordController::class, 'displayHistoryType']);
+Route::get('/entry/history/month/{month}', [RecordController::class, 'displayHistoryMonth']);
+Route::get('/entry/history/type/month/{type}/{month}', [RecordController::class, 'displayHistoryTypeMonth']);
