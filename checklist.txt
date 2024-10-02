@@ -1,8 +1,10 @@
 0. Register/Login
-Complete
+Sign Up - Complete
+Login - Complete
 
 1. Dashboard Overview
-Complete
+Income vs Expense - Complete
+Budget vs Expense
 
 2. Entry History
 Entry History for Expenses - Complete
@@ -20,4 +22,4 @@ Track Progress: Basic visual of how close you are to your goals.
 
 Additional Features (Optional)
 Dark Mode Toggle
-Mobile Responsiveness
+Mobile Responsiveness - Complete
