@@ -103,8 +103,11 @@ export default function Signin() {
                         <p className="mt-[1em] pointer-events-none">
                             Don't have an account?
                         </p>
-                        <a href="/register"
-                            className="mb-[1em]">
+                        <a 
+                            onClick={() => { 
+                                navigate('/register');
+                            }}
+                            className="mb-[1em] hover:cursor-pointer">
                             Sign Up here
                         </a>
                     </form>

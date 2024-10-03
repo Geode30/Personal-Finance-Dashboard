@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import { MyContext } from '../../MyContext';
 import FilterOptions from "../FilterOptions";
+import ProgressChart from "../ProgressChart";
 
 export default function MainContent({ logout, loading }) {
 
@@ -39,7 +40,7 @@ export default function MainContent({ logout, loading }) {
         { name: 'Income', value: 0 },
         { name: 'Expenses', value: 0 },
     ]);
-    const [noRecord, setNoRecord] = useState(false);
+    const [noRecord, setNoRecord] = useState(true);
 
     useEffect(() => { 
         console.log('Token: ', token);
@@ -94,7 +95,11 @@ export default function MainContent({ logout, loading }) {
     const filterByDay = () => {
         setFilteredBy('day');
         setFilterClicked(false);
-        setFilterTitle('Today');
+    }
+
+    const filterByWeek = () => {
+        setFilteredBy('week');
+        setFilterClicked(false);
     }
 
     const filterByMonth = () => {
@@ -146,6 +151,7 @@ export default function MainContent({ logout, loading }) {
                 <div onClick={handleFilterClicked} className={`text-[1.5em] select-none border-2 pl-[0.5em] pr-[0.5em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em] hover:cursor-pointer`}>Filter ▼</div>
                 <div className={`text-[1.25em] w-[8em] border-2 font-bold text-center text-[color:--text-light-gray] hover:cursor-pointer opacity-0 ${filterClicked ? 'animate-fadeIn' : 'animate-fadeOut'}`}>
                     <FilterOptions onClickFunction={filterByDay} filterClicked={filterClicked} optionValue={'Day'} />
+                    <FilterOptions onClickFunction={filterByWeek} filterClicked={filterClicked} optionValue={'Week'} />
                     <FilterOptions onClickFunction={filterByMonth} filterClicked={filterClicked} optionValue={'Month'} />
                     <FilterOptions onClickFunction={filterByYear} filterClicked={filterClicked} optionValue={'Year'} />
                 </div>
@@ -154,6 +160,9 @@ export default function MainContent({ logout, loading }) {
             <div className={`${noRecord ? 'hidden' : 'flex'} flex-col items-center`}>
                 <FinancePieChart data={data} />
                 <p className={`font-bold ${result.resultStatus === 'Saved' ? `text-[#32CD32]` : `text-[#D71515]`}`}>{`You ${result.resultStatus} ${result.resultValue} ${filterTitle}`}</p>
+
+                <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You're progress toward achieving your goal</h1>
+                <ProgressChart goal={1000} current={500} />
             </div>
             <div className={`w-fit h-fit flex flex-row flex-wrap justify-center items-center gap-x-[1em]`}>
                 <CustomButton onClickFunction={toAddIncomeForm} buttonValue={"Add Income"} />
@@ -161,7 +170,7 @@ export default function MainContent({ logout, loading }) {
                 <CustomButton onClickFunction={toAddHistoryPage} buttonValue={"History"} />
                 <CustomButton onClickFunction={toAddExpenseForm} buttonValue={"Set Goal"} />
             </div>
-            <CustomButton onClickFunction={logout} buttonValue={"Logout"} customStyles={"mt-[2em] mb-[2em]"} />
+            <CustomButton onClickFunction={logout} buttonValue={"Logout"} customStyles={"mt-[2em] mb-[2em] text-[color:--text-light-gray]"} />
         </div>
     )
 }

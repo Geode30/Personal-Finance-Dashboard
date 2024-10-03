@@ -88,10 +88,10 @@ export default function History() {
     return (
         <div className="w-screen h-screen flex flex-col items-center bg-[color:--background-gray] text-[color:--text-light-gray] pb-[2em]">
             <Loading isLoading={initialLoading}/>
-            <h1 className="text-[2em] font-bold mt-[0.5em]">Entry History</h1>
-            <div className="flex flex-row w-[25em] gap-x-[1em] ml-[4em]">
+            <h1 className={`${initialLoading ? 'hidden' : 'block'} text-[2em] font-bold mt-[0.5em]`}>Entry History</h1>
+            <div className={`${initialLoading ? 'opacity-0' : 'opacity-100'} flex flex-row w-[25em] gap-x-[1em] ml-[4em]`}>
                 <CustomButton
-                    customStyles={`${type === 'Income' ? 'bg-[color:--text-light-gray] text-[color:--background-dark-slate] border-[color:--border-dark-gray]' : 'bg-[color:--background-dark-slate] text-[color:--text-light-gray]'}`}
+                    customStyles={`${type === 'Income' ? 'text-[color:--background-dark-slate] bg-[color:--text-light-gray]' : 'bg-[color:--background-dark-slate] text-[color:--text-light-gray]'}`}
                     onClickFunction={() => { 
                     setType('Income');
                 }} buttonValue={'Income'} />
@@ -131,11 +131,11 @@ export default function History() {
                     setMonth('');
                 }} buttonValue={'All'}/>
                 </div>
-            <div className="flex flex-col items-center w-[25em] h-[30em] border-[2px] rounded-[10px] overflow-y-auto overflow-x-hidden custom-scrollbar mt-[1em] md:w-[40em] lg:w-[60em]">
+            <div className={`${initialLoading ? 'opacity-0' : 'opacity-100'} flex flex-col items-center w-[25em] h-[30em] border-[2px] rounded-[10px] overflow-y-auto overflow-x-hidden custom-scrollbar mt-[1em] md:w-[40em] lg:w-[60em]`}>
                 <div className={`${isLoading ? 'flex' : 'hidden'} items-center justify-center h-[100%]`}>
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
                 </div>
-                <div className={`${recordAvailable ? 'hidden' : 'block'} mt-[4em] text-[3em] font-bold`}>You've got no Records</div>
+                <div className={`${recordAvailable ? 'hidden' : 'block'} mt-[4em] text-center ml-[0.5em] mr-[0.5em] text-[3em] font-bold`}>You've got no Records</div>
                 {records.map((record, index) => ( 
                     <div key={index} className={`${isLoading ? 'hidden' : 'flex'} flex-row items-center w-[25em] h-fit pb-[0.5em] pt-[0.5em] pl-[1em] pr-[1em] border-[1px] border-t-0 border-r-0 border-l-0 md:w-[40em] lg:w-[60em]`}>
                         <div className="">

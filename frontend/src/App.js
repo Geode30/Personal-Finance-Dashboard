@@ -15,34 +15,41 @@ function App() {
 
   const { token } = useContext(MyContext);
 
-  const [isTokenAvailable, setIsTokenAvailable] = useState(true);
+  const [isTokenAvailableInitialTrue, setIsTokenAvailableTrue] = useState(true);
+  const [isTokenAvailableInitialFalse, setIsTokenAvailableFalse] = useState(false);
 
   useEffect(() => {
     const checkToken = () => {
       if (token === 'No Token') {
-        setIsTokenAvailable(false);
+        setIsTokenAvailableTrue(false);
+        setIsTokenAvailableFalse(false);
       } else {
-        setIsTokenAvailable(true);
+        setIsTokenAvailableTrue(true);
+        setIsTokenAvailableFalse(true);
       }
     };
 
     checkToken();
   }, [token]);
 
-  const ProtectedRoute = ({ element, isTokenAvailable }) => {
-    return isTokenAvailable ? element : <Navigate to="/" />;
+  const ProtectedRoute = ({ element }) => {
+    return isTokenAvailableInitialTrue ? element : <Navigate to="/" />;
   };
+
+  const RedirectIfLoggedIn = ({ element }) => { 
+    return isTokenAvailableInitialFalse ? <Navigate to="/dashboard" /> : element;
+  }
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={!isTokenAvailable ? <Home /> : <Navigate to='dashboard' />} />
-        <Route path='register' element={!isTokenAvailable ? <SignUp /> : <Navigate to='/dashboard' />} />
-        <Route path='login' element={!isTokenAvailable ? <SignIn /> : <Navigate to='/dashboard' />} />
-        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} isTokenAvailable={isTokenAvailable} />} />
-        <Route path="/income/add" element={<ProtectedRoute element={<AddIncomeForm />} isTokenAvailable={isTokenAvailable} />} />
-        <Route path="/expense/add" element={<ProtectedRoute element={<AddExpenseForm />} isTokenAvailable={isTokenAvailable} />} />
-        <Route path="/entry/history" element={<ProtectedRoute element={<History />} isTokenAvailable={isTokenAvailable} />} />
+        <Route path='/' element={<RedirectIfLoggedIn element={<Home />} />} />
+        <Route path='register' element={<RedirectIfLoggedIn element={<SignUp />} />} />
+        <Route path='login' element={<RedirectIfLoggedIn element={<SignIn />} />} />
+        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        <Route path="/income/add" element={<ProtectedRoute element={<AddIncomeForm />} />} />
+        <Route path="/expense/add" element={<ProtectedRoute element={<AddExpenseForm />} />} />
+        <Route path="/entry/history" element={<ProtectedRoute element={<History />} />} />
       </Routes>
     </BrowserRouter>
   );

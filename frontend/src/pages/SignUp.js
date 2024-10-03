@@ -123,8 +123,10 @@ export default function SignUp() {
                         Already have an account?
                     </p>
                     <a
-                        href="/login"
-                        className="mb-[1em]">
+                        onClick={() => { 
+                            navigate('/login');
+                        }}
+                        className="mb-[1em] hover:cursor-pointer">
                         Sign In here
                     </a>
                 </form>

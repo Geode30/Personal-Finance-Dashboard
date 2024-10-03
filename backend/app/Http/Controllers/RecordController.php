@@ -97,6 +97,44 @@ class RecordController extends Controller
         ]);
     }
 
+    public function displayDataWeek(Request $request)
+    {
+        $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
+
+        $startOfWeek = Carbon::now()->startOfWeek();
+        $endOfWeek = Carbon::now()->endOfWeek();
+
+        $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereBetween('created_at', [$startOfWeek, $endOfWeek])->sum('amount');
+        $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereBetween('created_at', [$startOfWeek, $endOfWeek])->sum('amount');
+
+        $result = 0;
+        $savedOrLoss = '';
+
+        if ($totalIncome > $totalExpense) {
+            $result = $totalIncome - $totalExpense;
+            $savedOrLoss = 'Saved';
+        } else {
+            $result = $totalExpense - $totalIncome;
+            $savedOrLoss = 'Loss';
+        }
+
+        $noRecord = false;
+
+        if ($totalExpense == 0 && $totalIncome == 0) {
+            $noRecord = true;
+        }
+
+        return response()->json([
+            'message' => 'Successful',
+            'noRecord' => $noRecord,
+            'title' => 'This Week',
+            'totalIncome' => intval($totalIncome),
+            'totalExpense' => intval($totalExpense),
+            'result' => intval($result),
+            'resultStatus' => $savedOrLoss
+        ]);
+    }
+
     public function displayDataMonth(Request $request)
     {
         $verifyToken = PersonalAccessToken::findToken($request->bearerToken());
