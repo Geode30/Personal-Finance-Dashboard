@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RecordController;
+use App\Http\Controllers\SetBudgetAndGoalsController;
 
 // Auth Controller
 Route::post('/register', [AuthController::class, 'register']);
@@ -20,3 +21,7 @@ Route::get('/entry/history', [RecordController::class, 'displayHistory']);
 Route::get('/entry/history/type/{type}', [RecordController::class, 'displayHistoryType']);
 Route::get('/entry/history/month/{month}', [RecordController::class, 'displayHistoryMonth']);
 Route::get('/entry/history/type/month/{type}/{month}', [RecordController::class, 'displayHistoryTypeMonth']);
+
+// Set Budget and Goals Controller
+Route::post('/set/budgets', [SetBudgetAndGoalsController::class, 'setBudgets']);
+Route::post('/set/goals', [SetBudgetAndGoalsController::class, 'setSavingsGoals']);

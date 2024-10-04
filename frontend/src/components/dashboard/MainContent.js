@@ -90,6 +90,14 @@ export default function MainContent({ logout, loading }) {
         navigate('/entry/history');
     }
 
+    const toSetGoalsPage = () => {
+        navigate('/set/goals');
+    }
+
+    const toSetBudgetsPage = () => {
+        navigate('/set/budgets');
+    }
+
     //Filter Click Functions
 
     const filterByDay = () => {
@@ -164,11 +172,12 @@ export default function MainContent({ logout, loading }) {
                 <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You're progress toward achieving your goal</h1>
                 <ProgressChart goal={1000} current={500} />
             </div>
-            <div className={`w-fit h-fit flex flex-row flex-wrap justify-center items-center gap-x-[1em]`}>
+            <div className={`w-[25em] md:w-fit h-fit flex flex-row flex-wrap justify-center items-center gap-x-[1em]`}>
                 <CustomButton onClickFunction={toAddIncomeForm} buttonValue={"Add Income"} />
                 <CustomButton onClickFunction={toAddExpenseForm} buttonValue={"Add Expense"} />
                 <CustomButton onClickFunction={toAddHistoryPage} buttonValue={"History"} />
-                <CustomButton onClickFunction={toAddExpenseForm} buttonValue={"Set Goal"} />
+                <CustomButton onClickFunction={toSetBudgetsPage} buttonValue={"Set Budget"} />
+                <CustomButton onClickFunction={toSetGoalsPage} buttonValue={"Set Goal"} />
             </div>
             <CustomButton onClickFunction={logout} buttonValue={"Logout"} customStyles={"mt-[2em] mb-[2em] text-[color:--text-light-gray]"} />
         </div>

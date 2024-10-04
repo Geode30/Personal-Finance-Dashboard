@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import AddIncomeForm from './pages/AddIncomeForm';
 import AddExpenseForm from './pages/AddExpenseForm';
+import SetSavingsGoals from './pages/SetSavingsGoals';
+import SetBudgets from './pages/SetBudgets';
 import History from './pages/History';
 
 import { MyContext } from './MyContext';
@@ -49,6 +51,8 @@ function App() {
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
         <Route path="/income/add" element={<ProtectedRoute element={<AddIncomeForm />} />} />
         <Route path="/expense/add" element={<ProtectedRoute element={<AddExpenseForm />} />} />
+        <Route path="/set/goals" element={<ProtectedRoute element={<SetSavingsGoals />} />} />
+        <Route path="/set/budgets" element={<ProtectedRoute element={<SetBudgets />} />} />
         <Route path="/entry/history" element={<ProtectedRoute element={<History />} />} />
       </Routes>
     </BrowserRouter>

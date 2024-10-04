@@ -21,6 +21,12 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'weekly_budget',
+        'monthly_budget',
+        'yearly_budget',
+        'weekly_savings_goal',
+        'monthly_savings_goal',
+        'yearly_savings_goal',
     ];
 
     /**
