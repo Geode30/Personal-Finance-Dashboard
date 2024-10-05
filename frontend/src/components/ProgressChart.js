@@ -1,9 +1,9 @@
     import React from 'react';
     import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
-    const ProgressChart = ({ goal, current }) => {
+    const ProgressChart = ({ key1, key2, value1, value2, fill1, fill2 }) => {
         const data = [
-            { name: 'Progress', Savings: current, Goal: goal },
+            { name: '', [key1]: value1, [key2]: value2 },
         ];
 
         return (
@@ -14,8 +14,8 @@
                     <YAxis />
                     <Tooltip />
                     <Legend wrapperStyle={{ fontWeight: 'bold' }} iconType="circle" />
-                    <Bar dataKey="Savings" fill="#4CAF50" barSize={20} /> {/* Adjust thickness here */}
-                    <Bar dataKey="Goal" fill="#FF9800" barSize={20} />
+                    <Bar dataKey={key1} fill={fill1} barSize={20} />
+                    <Bar dataKey={key2} fill={fill2} barSize={20} />
                 </BarChart>
             </div>
         );

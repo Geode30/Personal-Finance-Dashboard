@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Record;
+use App\Models\User;
 use Carbon\Carbon;
 use Laravel\Sanctum\PersonalAccessToken;
 
@@ -69,6 +70,9 @@ class RecordController extends Controller
         $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereDate('created_at', $today)->sum('amount');
         $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereDate('created_at', $today)->sum('amount');
 
+        $budget = User::where('id', $verifyToken->tokenable_id)->pluck('daily_budget')->first();
+        $goal = User::where('id', $verifyToken->tokenable_id)->pluck('daily_savings_goal')->first();
+
         $result = 0;
         $savedOrLoss = '';
 
@@ -88,7 +92,9 @@ class RecordController extends Controller
 
         return response()->json([
             'message' => 'Successful',
-            'title' => 'Today',
+            'title' => 'today',
+            'budget' => intval($budget),
+            'goal' => intval($goal),
             'noRecord' => $noRecord,
             'totalIncome' => intval($totalIncome),
             'totalExpense' => intval($totalExpense),
@@ -107,6 +113,9 @@ class RecordController extends Controller
         $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereBetween('created_at', [$startOfWeek, $endOfWeek])->sum('amount');
         $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereBetween('created_at', [$startOfWeek, $endOfWeek])->sum('amount');
 
+        $budget = User::where('id', $verifyToken->tokenable_id)->pluck('weekly_budget')->first();
+        $goal = User::where('id', $verifyToken->tokenable_id)->pluck('weekly_savings_goal')->first();
+
         $result = 0;
         $savedOrLoss = '';
 
@@ -127,7 +136,9 @@ class RecordController extends Controller
         return response()->json([
             'message' => 'Successful',
             'noRecord' => $noRecord,
-            'title' => 'This Week',
+            'title' => 'this week',
+            'budget' => intval($budget),
+            'goal' => intval($goal),
             'totalIncome' => intval($totalIncome),
             'totalExpense' => intval($totalExpense),
             'result' => intval($result),
@@ -147,6 +158,9 @@ class RecordController extends Controller
         $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->sum('amount');
         $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereMonth('created_at', $thisMonth)->whereYear('created_at', $thisYear)->sum('amount');
 
+        $budget = User::where('id', $verifyToken->tokenable_id)->pluck('monthly_budget')->first();
+        $goal = User::where('id', $verifyToken->tokenable_id)->pluck('monthly_savings_goal')->first();
+
         $result = 0;
         $savedOrLoss = '';
 
@@ -167,8 +181,10 @@ class RecordController extends Controller
         return response()->json([
             'message' => 'Successful',
             'noRecord' => $noRecord,
-            'title' => sprintf('This Month, %s', $monthName),
+            'title' => sprintf('this month, %s', $monthName),
             'month' => $monthName,
+            'budget' => intval($budget),
+            'goal' => intval($goal),
             'totalIncome' => intval($totalIncome),
             'totalExpense' => intval($totalExpense),
             'result' => intval($result),
@@ -185,6 +201,9 @@ class RecordController extends Controller
         $totalIncome = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Income')->whereYear('created_at', $thisYear)->sum('amount');
         $totalExpense = Record::where('user_id', $verifyToken->tokenable_id)->where('type', 'Expense')->whereYear('created_at', $thisYear)->sum('amount');
 
+        $budget = User::where('id', $verifyToken->tokenable_id)->pluck('yearly_budget')->first();
+        $goal = User::where('id', $verifyToken->tokenable_id)->pluck('yearly_savings_goal')->first();
+
         $result = 0;
         $savedOrLoss = '';
 
@@ -205,7 +224,9 @@ class RecordController extends Controller
         return response()->json([
             'message' => 'Successful',
             'noRecord' => $noRecord,
-            'title' => sprintf('This Year, %d', $thisYear),
+            'title' => sprintf('this year, %d', $thisYear),
+            'budget' => intval($budget),
+            'goal' => intval($goal),
             'year' => intval($thisYear),
             'totalIncome' => intval($totalIncome),
             'totalExpense' => intval($totalExpense),

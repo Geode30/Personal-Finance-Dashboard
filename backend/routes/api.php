@@ -25,3 +25,5 @@ Route::get('/entry/history/type/month/{type}/{month}', [RecordController::class,
 // Set Budget and Goals Controller
 Route::post('/set/budgets', [SetBudgetAndGoalsController::class, 'setBudgets']);
 Route::post('/set/goals', [SetBudgetAndGoalsController::class, 'setSavingsGoals']);
+Route::get('/get/budgets', [SetBudgetAndGoalsController::class, 'getBudgets']);
+Route::get('/get/goals', [SetBudgetAndGoalsController::class, 'getSavingsGoals']);

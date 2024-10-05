@@ -33,7 +33,7 @@ export default function MainContent({ logout, loading }) {
     const navigate = useNavigate();
     const { setToken, token } = useContext(MyContext);
     const [result, setResult] = useState({
-        resultValue: '',
+        resultValue: 0,
         resultStatus: ''
     });
     const [data, setData] = useState([
@@ -41,6 +41,10 @@ export default function MainContent({ logout, loading }) {
         { name: 'Expenses', value: 0 },
     ]);
     const [noRecord, setNoRecord] = useState(true);
+    const [financials, setFinancials] = useState({
+        budget: 0,
+        goal: 0
+    });
 
     useEffect(() => { 
         console.log('Token: ', token);
@@ -66,6 +70,10 @@ export default function MainContent({ logout, loading }) {
                         )
                     );
                     setNoRecord(response['data']['noRecord']);
+                    setFinancials({
+                        budget: response['data']['budget'],
+                        goal: response['data']['goal']
+                    })
                 }
             }).catch(error => {
                 console.log(error);
@@ -140,6 +148,10 @@ export default function MainContent({ logout, loading }) {
                         )
                     );
                     setNoRecord(response['data']['noRecord']);
+                    setFinancials({
+                        budget: response['data']['budget'],
+                        goal: response['data']['goal']
+                    })
                     setFilterTitle(response['data']['title']);
                 }
             }).catch(error => {
@@ -154,7 +166,7 @@ export default function MainContent({ logout, loading }) {
     return (
         <div className={`h-fit w-screen ${loading ? 'hidden' : 'flex'} flex-col items-center bg-[color:--background-gray]`}>
             <Loading isLoading={isLoading} />
-            <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You're Income and Expenses { filterTitle }</h1>
+            <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>Your income and expenses { filterTitle }</h1>
             <div>
                 <div onClick={handleFilterClicked} className={`text-[1.5em] select-none border-2 pl-[0.5em] pr-[0.5em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em] hover:cursor-pointer`}>Filter ▼</div>
                 <div className={`text-[1.25em] w-[8em] border-2 font-bold text-center text-[color:--text-light-gray] hover:cursor-pointer opacity-0 ${filterClicked ? 'animate-fadeIn' : 'animate-fadeOut'}`}>
@@ -164,13 +176,30 @@ export default function MainContent({ logout, loading }) {
                     <FilterOptions onClickFunction={filterByYear} filterClicked={filterClicked} optionValue={'Year'} />
                 </div>
             </div>
-            <h1 className={`${noRecord ? 'block' : 'hidden'} text-[3em] w-[10em] md:w-[15em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em]`}>You got no records of income and expenses {filterTitle}</h1>
+            <h1 className={`${noRecord ? 'block' : 'hidden'} text-[2em] w-[10em] md:w-[15em] font-bold text-center text-[color:--text-light-gray] mt-[0.5em]`}>You got no records of income and expenses {filterTitle}</h1>
             <div className={`${noRecord ? 'hidden' : 'flex'} flex-col items-center`}>
                 <FinancePieChart data={data} />
                 <p className={`font-bold ${result.resultStatus === 'Saved' ? `text-[#32CD32]` : `text-[#D71515]`}`}>{`You ${result.resultStatus} ${result.resultValue} ${filterTitle}`}</p>
 
-                <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You're progress toward achieving your goal</h1>
-                <ProgressChart goal={1000} current={500} />
+                <div className="w-screen border-[1px] border-[color:--text-light-gray] mt-[2.5em]"></div>
+
+                
+                <h1 className={`${financials.goal === 0 ? 'block' : 'hidden'} text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You have not set a goal {filterTitle}</h1>
+                <div className={`${financials.goal === 0 ? 'hidden' : 'flex'} flex-col items-center`}>
+                    <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>Your progress toward achieving your goal {filterTitle}</h1>
+                    <ProgressChart key1={'Savings'} value1={result.resultValue} key2={'Goal'} value2={financials.goal} fill1={'#4CAF50'} fill2={'#007bff'} />
+
+                </div>
+
+                <div className="w-screen border-[1px] border-[color:--text-light-gray] mt-[2.5em]"></div>
+
+                <h1 className={`${financials.budget === 0 ? 'block' : 'hidden'} text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>You have not set a budget {filterTitle}</h1>
+                <div className={`${financials.budget === 0 ? 'hidden' : 'flex'} flex-col items-center`}>
+                    <h1 className={`text-[2em] font-bold ml-[1.2em] mr-[1.2em] text-center text-[color:--text-light-gray] mt-[1em]`}>Expense VS. Budget</h1>
+                    <ProgressChart key1={'Expense'} value1={data.find(item => item.name === 'Expenses').value} key2={'Budget'} value2={financials.budget} fill1={'#ff3b30'} fill2={'#4CAF50'} />
+                </div>
+                
+                <div className="w-screen border-[1px] border-[color:--text-light-gray] mt-[2.5em] mb-[2em]"></div>
             </div>
             <div className={`w-[25em] md:w-fit h-fit flex flex-row flex-wrap justify-center items-center gap-x-[1em]`}>
                 <CustomButton onClickFunction={toAddIncomeForm} buttonValue={"Add Income"} />
@@ -179,6 +208,7 @@ export default function MainContent({ logout, loading }) {
                 <CustomButton onClickFunction={toSetBudgetsPage} buttonValue={"Set Budget"} />
                 <CustomButton onClickFunction={toSetGoalsPage} buttonValue={"Set Goal"} />
             </div>
+            <div className="w-screen border-[1px] border-[color:--text-light-gray] mt-[2.5em]"></div>
             <CustomButton onClickFunction={logout} buttonValue={"Logout"} customStyles={"mt-[2em] mb-[2em] text-[color:--text-light-gray]"} />
         </div>
     )
