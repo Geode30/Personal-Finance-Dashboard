@@ -73,6 +73,8 @@ class RecordController extends Controller
         $budget = User::where('id', $verifyToken->tokenable_id)->pluck('daily_budget')->first();
         $goal = User::where('id', $verifyToken->tokenable_id)->pluck('daily_savings_goal')->first();
 
+        $username = User::where('id', $verifyToken->tokenable_id)->pluck('name')->first();
+
         $result = 0;
         $savedOrLoss = '';
 
@@ -93,6 +95,7 @@ class RecordController extends Controller
         return response()->json([
             'message' => 'Successful',
             'title' => 'today',
+            'username' => $username,
             'budget' => intval($budget),
             'goal' => intval($goal),
             'noRecord' => $noRecord,
@@ -116,6 +119,8 @@ class RecordController extends Controller
         $budget = User::where('id', $verifyToken->tokenable_id)->pluck('weekly_budget')->first();
         $goal = User::where('id', $verifyToken->tokenable_id)->pluck('weekly_savings_goal')->first();
 
+        $username = User::where('id', $verifyToken->tokenable_id)->pluck('name')->first();
+
         $result = 0;
         $savedOrLoss = '';
 
@@ -137,6 +142,7 @@ class RecordController extends Controller
             'message' => 'Successful',
             'noRecord' => $noRecord,
             'title' => 'this week',
+            'username' => $username,
             'budget' => intval($budget),
             'goal' => intval($goal),
             'totalIncome' => intval($totalIncome),
@@ -161,6 +167,8 @@ class RecordController extends Controller
         $budget = User::where('id', $verifyToken->tokenable_id)->pluck('monthly_budget')->first();
         $goal = User::where('id', $verifyToken->tokenable_id)->pluck('monthly_savings_goal')->first();
 
+        $username = User::where('id', $verifyToken->tokenable_id)->pluck('name')->first();
+
         $result = 0;
         $savedOrLoss = '';
 
@@ -183,6 +191,7 @@ class RecordController extends Controller
             'noRecord' => $noRecord,
             'title' => sprintf('this month, %s', $monthName),
             'month' => $monthName,
+            'username' => $username,
             'budget' => intval($budget),
             'goal' => intval($goal),
             'totalIncome' => intval($totalIncome),
@@ -203,6 +212,8 @@ class RecordController extends Controller
 
         $budget = User::where('id', $verifyToken->tokenable_id)->pluck('yearly_budget')->first();
         $goal = User::where('id', $verifyToken->tokenable_id)->pluck('yearly_savings_goal')->first();
+
+        $username = User::where('id', $verifyToken->tokenable_id)->pluck('name')->first();
 
         $result = 0;
         $savedOrLoss = '';
@@ -225,6 +236,7 @@ class RecordController extends Controller
             'message' => 'Successful',
             'noRecord' => $noRecord,
             'title' => sprintf('this year, %d', $thisYear),
+            'username' => $username,
             'budget' => intval($budget),
             'goal' => intval($goal),
             'year' => intval($thisYear),

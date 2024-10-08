@@ -32,7 +32,7 @@
 
 body {
   overflow-x: hidden;
-  background-color: #1e1e1e;
+  margin: 0;
   font-family: "Roboto", sans-serif;
 }
 
@@ -87,6 +87,78 @@ body {
     opacity: 0;
     pointer-events: none;
   }
+}
+
+@keyframes darkModeToOff {
+  0% {
+    transform: translateX(0px);
+    background-color: var(--background-gray);
+    border-color: var(--text-light-gray);
+  }
+  100% {
+    transform: translateX(-31px);
+    background-color: var(--text-light-gray);
+    border-color: var(--background-gray);
+  }
+}
+
+@keyframes darkModeToOnBG {
+  0% {
+    background-color: var(--background-gray);
+    border-color: var(--text-light-gray);
+  }
+  100% {
+    background-color: var(--text-light-gray);
+    border-color: var(--background-gray);
+  }
+}
+
+@keyframes darkModeToOffBG {
+  0% {
+    background-color: var(--text-light-gray);
+    border-color: var(--background-gray);
+  }
+  100% {
+    background-color: var(--background-gray);
+    border-color: var(--text-light-gray);
+  }
+}
+
+@keyframes darkModeToOn {
+  0% {
+    transform: translateX(-31px);
+    background-color: var(--text-light-gray);
+    border-color: var(--background-gray);
+  }
+  100% {
+    transform: translateX(0px);
+    background-color: var(--background-gray);
+    border-color: var(--text-light-gray);
+  }
+}
+
+.toggle-dark-mode-off {
+  animation: darkModeToOff 0.2s ease-in-out forwards;
+}
+
+.toggle-dark-mode-of-button {
+  animation: darkModeToOff 0.4s ease-in-out forwards;
+}
+
+.toggle-dark-mode-on {
+  animation: darkModeToOn 0.2s ease-in-out forwards;
+}
+
+.toggle-dark-mode-on-button {
+  animation: darkModeToOn 0.4s ease-in-out forwards;
+}
+
+.toggle-dark-mode-on-bg {
+  animation: darkModeToOnBG 0.2s ease-in-out forwards;
+}
+
+.toggle-dark-mode-off-bg {
+  animation: darkModeToOffBG 0.2s ease-in-out forwards;
 }
 
 .animate-fadeIn {

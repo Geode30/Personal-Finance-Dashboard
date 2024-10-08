@@ -4,9 +4,10 @@ import { MyContext } from '../MyContext';
 import CustomButton from "../components/CustomButton";
 import FilterOptions from "../components/FilterOptions";
 import Loading from "../components/Loading";
+import DarkModeToggle from "../components/DarkModeToggle";
 
 export default function History() {
-    const { token } = useContext(MyContext);
+    const { token, isDarkMode } = useContext(MyContext);
     const [records, setRecords] = useState([{}]);
     const [isLoading, setIsLoading] = useState(true);
     const [initialLoading, setInitialLoading] = useState(true);
@@ -86,24 +87,27 @@ export default function History() {
     }, [month, type])
 
     return (
-        <div className="w-screen h-screen flex flex-col items-center bg-[color:--background-gray] text-[color:--text-light-gray] pb-[2em]">
+        <div className={`w-screen h-[150vh] flex flex-col items-center ${isDarkMode === 'On' ? 'bg-[color:--background-gray] text-[color:--text-light-gray]' : 'bg-[color:--text-light-gray] text-[color:--background-gray]'} pb-[2em]`}>
+            <div className={`${initialLoading ? 'hidden' : 'flex'} ml-auto`}>
+                <DarkModeToggle mtValue={'mt-[1em]'} />
+            </div>
             <Loading isLoading={initialLoading}/>
-            <h1 className={`${initialLoading ? 'hidden' : 'block'} text-[2em] font-bold mt-[0.5em]`}>Entry History</h1>
+            <h1 className={`${initialLoading ? 'hidden' : 'block'} text-[2em] font-bold mt-[`}>Entry History</h1>
             <div className={`${initialLoading ? 'opacity-0' : 'opacity-100'} flex flex-row w-[25em] gap-x-[1em] ml-[4em]`}>
                 <CustomButton
-                    customStyles={`${type === 'Income' ? 'text-[color:--background-dark-slate] bg-[color:--text-light-gray]' : 'bg-[color:--background-dark-slate] text-[color:--text-light-gray]'}`}
+                    customStyles={`${type === 'Income' ? `${isDarkMode === 'On' ? 'text-[color:--background-dark-slate] bg-[color:--text-light-gray] border-[color:--background-dark-slate]' : 'text-[color:--text-light-gray] bg-[color:--background-dark-slate] border-[color:--text-light-gray]'}` : `${isDarkMode === 'On' ? 'text-[color:--text-light-gray] bg-[color:--background-dark-slate] border-[color:--text-light-gray] hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--background-dark-slate]' : 'text-[color:--background-dark-slate] bg-[color:--text-light-gray] border-[color:--background-dark-slate] hover:bg-[color:--background-dark-slate] hover:text-[color:--text-light-gray] hover:border-[color:--text-light-gray]'}`}`}
                     onClickFunction={() => { 
                     setType('Income');
                 }} buttonValue={'Income'} />
                 <CustomButton
-                    customStyles={`${type === 'Expense' ? 'bg-[color:--text-light-gray] text-[color:--background-dark-slate] border-[color:--border-dark-gray]' : 'bg-[color:--background-dark-slate] text-[color:--text-light-gray]'}`}
+                    customStyles={`${type === 'Expense' ? `${isDarkMode === 'On' ? 'text-[color:--background-dark-slate] bg-[color:--text-light-gray] border-[color:--background-dark-slate]' : 'text-[color:--text-light-gray] bg-[color:--background-dark-slate] border-[color:--text-light-gray]'}` : `${isDarkMode === 'On' ? 'text-[color:--text-light-gray] bg-[color:--background-dark-slate] border-[color:--text-light-gray] hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--background-dark-slate]' : 'text-[color:--background-dark-slate] bg-[color:--text-light-gray] border-[color:--background-dark-slate] hover:bg-[color:--background-dark-slate] hover:text-[color:--text-light-gray] hover:border-[color:--text-light-gray]'}`}`}
                     onClickFunction={() => { 
                     setType('Expense');
                 }} buttonValue={'Expense'} />
 
                 <div>
                     <div
-                        className={`${month ? 'bg-[color:--text-light-gray] text-[color:--background-dark-slate] border-[color:--border-dark-gray]': 'bg-[color:--background-dark-slate] text-[color:--text-light-gray]'} border-2 rounded-[10px] mt-[1.5em] p-[0.5em] font-bold hover:cursor-pointer hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--border-dark-gray] transition-all duration-[0.3s] ease-in-out`}
+                        className={`${month ? `${isDarkMode === 'On' ? 'bg-[color:--text-light-gray] text-[color:--background-dark-slate] border-[color:--background-dark-slate]' : 'bg-[color:--background-dark-slate] text-[color:--text-light-gray] border-[color:--text-light-gray]'}` : `${isDarkMode === 'On' ? 'bg-[color:--background-dark-slate] text-[color:--text-light-gray] border-[color:--text-light-gray] hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--background-dark-slate]' : 'bg-[color:--text-light-gray] text-[color:--background-dark-slate] border-[color:--background-dark-slate] hover:bg-[color:--background-dark-slate] hover:text-[color:--text-light-gray] hover:border-[color:--text-light-gray]'}`} border-2 rounded-[10px] mt-[1.5em] p-[0.5em] font-bold hover:cursor-pointer transition-all duration-[0.3s] ease-in-out`}
                         onClick={() => { 
                                 if (filterClicked) {
                                     setFilterClicked(false);
@@ -113,7 +117,7 @@ export default function History() {
                                 }
                         }}>{month ? month : 'Month'} ▼
                     </div>
-                    <div className={`absolute flex-col hover:cursor-pointer w-[10em] bg-[color:--background-gray] text-center mt-[0.2em] ${filterClicked ? 'animate-fadeIn' : 'animate-fadeOut'}`}>
+                    <div className={`absolute flex-col hover:cursor-pointer w-[10em] ${isDarkMode === 'On' ? 'bg-[color:--background-gray]' : 'bg-[color:--text-light-gray'} text-center mt-[0.2em] ${filterClicked ? 'animate-fadeIn' : 'animate-fadeOut'}`}>
                     {months.map((month) => (
                         <FilterOptions
                             key={month}
@@ -131,13 +135,13 @@ export default function History() {
                     setMonth('');
                 }} buttonValue={'All'}/>
                 </div>
-            <div className={`${initialLoading ? 'opacity-0' : 'opacity-100'} flex flex-col items-center w-[25em] h-[30em] border-[2px] rounded-[10px] overflow-y-auto overflow-x-hidden custom-scrollbar mt-[1em] md:w-[40em] lg:w-[60em]`}>
+            <div className={`${initialLoading ? 'opacity-0' : 'opacity-100'} flex flex-col items-center w-[25em] h-[30em] border-[2px] ${isDarkMode === 'On' ? 'bg-[color:--background-gray] border-[color:--text-light-gray]' : 'bg-[color:--text-light-gray] border-[color:--background-gray]'} rounded-[10px] overflow-y-auto overflow-x-hidden custom-scrollbar mt-[1em] md:w-[40em] lg:w-[60em]`}>
                 <div className={`${isLoading ? 'flex' : 'hidden'} items-center justify-center h-[100%]`}>
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
                 </div>
                 <div className={`${recordAvailable ? 'hidden' : 'block'} mt-[4em] text-center ml-[0.5em] mr-[0.5em] text-[3em] font-bold`}>You've got no Records</div>
                 {records.map((record, index) => ( 
-                    <div key={index} className={`${isLoading ? 'hidden' : 'flex'} flex-row items-center w-[25em] h-fit pb-[0.5em] pt-[0.5em] pl-[1em] pr-[1em] border-[1px] border-t-0 border-r-0 border-l-0 md:w-[40em] lg:w-[60em]`}>
+                    <div key={index} className={`${isLoading ? 'hidden' : 'flex'} flex-row items-center w-[25em] h-fit pb-[0.5em] pt-[0.5em] pl-[1em] pr-[1em] ${isDarkMode === 'On' ? 'bg-[color:--background-gray] border-[color:--text-light-gray]' : 'bg-[color:--text-light-gray] border-[color:--background-gray]'} border-[1px] border-t-0 border-r-0 border-l-0 md:w-[40em] lg:w-[60em]`}>
                         <div className="">
                             <p>{record['type']}</p>
                             <p>{record['category']}</p>

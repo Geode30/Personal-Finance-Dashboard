@@ -3,11 +3,12 @@ import React from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { MyContext } from '../MyContext';
+import DarkModeToggle from "../components/DarkModeToggle";
 
 export default function Signin() {
 
     const navigate = useNavigate();
-    const { setToken } = useContext(MyContext);
+    const { setToken, isDarkMode } = useContext(MyContext);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -65,7 +66,10 @@ export default function Signin() {
     };
 
     return (
-        <div className="w-screen h-screen flex flex-col items-center bg-[color:--background-gray]">
+        <div className={`w-screen h-screen flex flex-col items-center ${isDarkMode === 'On' ? 'bg-[color:--background-gray]' : 'bg-[color:--text-light-gray]'}`}>
+            <div className={`${isLoading ? 'hidden' : 'flex'} mb-[3.5em] ml-auto`}>
+                <DarkModeToggle />
+            </div>
             <div className={`h-screen w-screen ${successMsgShown ? 'flex' : 'hidden'} justify-center items-center absolute bg-[rgba(255,255,255,0.2)]`}>
                 <div className="h-[4em] w-[20em] rounded-[10px] absolute bg-[rgba(30,30,30,0.95)] text-white text-center pt-[1.2em]">{loginSuccess ? 'Login Successful' : 'Login Failed'}</div>
             </div>
@@ -74,7 +78,7 @@ export default function Signin() {
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-500 border-t-transparent"></div>
                 </div>
                 :
-                <div className="w-[20em] h-fit bg-[color:--border-dark-gray] border-2 border-[color:--border-light-gray] text-[color:--text-light-gray] mt-[8em] rounded-[10px] flex flex-col items-center">
+                <div className={`w-[20em] h-fit border-2 ${isDarkMode === 'On' ? 'text-[color:--text-light-gray] bg-[color:--border-dark-gray] border-[color:--text-light-gray]' : 'text-[color:--background-gray] bg-[color:--text-light-gray] border-[color:--background-gray]'} rounded-[10px] flex flex-col items-center`}>
                     <form onSubmit={login}
                         className="w-max h-max flex flex-col items-center">
                         <p className="text-[2em] font-bold mt-[1em]">
@@ -88,7 +92,7 @@ export default function Signin() {
                             type="text"
                             value={email}
                             onChange={emailChange}
-                            className="bg-[color:--background-dark-slate] border-2 rounded-[5px] p-[0.3em] w-[16em] mt-[0.5em]" />
+                            className={`${isDarkMode === 'On' ? 'bg-[color:--background-dark-slate]' : 'bg-[color:--text-light-gray] border-[color:--background-gray]'} border-2 rounded-[5px] p-[0.3em] w-[16em] mt-[0.5em]`} />
                         <label className="mt-[1em]">
                             Password:
                         </label>
@@ -96,9 +100,9 @@ export default function Signin() {
                             type="password"
                             value={password}
                             onChange={passwordChange}
-                            className="bg-[color:--background-dark-slate] border-2 rounded-[5px] p-[0.3em] w-[16em] mt-[0.5em]" />
+                            className={`${isDarkMode === 'On' ? 'bg-[color:--background-dark-slate]' : 'bg-[color:--text-light-gray] border-[color:--background-gray]'} border-2 rounded-[5px] p-[0.3em] w-[16em] mt-[0.5em]`} />
                         <input type="submit"
-                            className="bg-[color:--background-dark-slate] border-2 rounded-[10px] mt-[1.5em] p-[0.5em] text-[color:--text-light-gray] font-bold hover:cursor-pointer hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--border-dark-gray] transition-all duration-[0.3s] ease-in-out"
+                            className={`${isDarkMode === 'On' ? 'bg-[color:--background-dark-slate] text-[color:--text-light-gray] border-[color:--text-light-gray] hover:bg-[color:--text-light-gray] hover:text-[color:--background-dark-slate] hover:border-[color:--border-dark-gray]' : 'bg-[color:--text-light-gray] text-[color:--background-dark-slate] border-[color:--border-dark-gray] hover:bg-[color:--background-dark-slate] hover:text-[color:--text-light-gray] hover:border-[color:--border-dark-gray]'} border-2 rounded-[10px] mt-[1.5em] p-[0.5em] font-bold hover:cursor-pointer transition-all duration-[0.3s] ease-in-out`}
                             value='Sign In' />
                         <p className="mt-[1em] pointer-events-none">
                             Don't have an account?

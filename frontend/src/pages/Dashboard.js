@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
     const [loading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const { setToken, token } = useContext(MyContext);
+    const { setToken, token, isDarkMode } = useContext(MyContext);
 
     useEffect(() => { 
         setIsLoading(true);
@@ -36,7 +36,7 @@ export default function Dashboard() {
     }
 
     return (
-        <div className='h-screen w-screen bg-[color:--background-gray] flex flex-col items-center'>
+        <div className={`h-screen w-screen ${isDarkMode === 'On' ? 'bg-[color:--background-gray]' : 'bg-[color:--text-light-gray]'} flex flex-col items-center`}>
             <Loading isLoading={loading} />
             <MainContent logout={logout} loading={loading} />
         </div>
